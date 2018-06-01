@@ -1,20 +1,17 @@
 package com.example.terence.mein_fangbuch;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,73 +24,45 @@ import java.net.URLEncoder;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
-public class Login_Fragment extends Fragment {
+public class Fang_Hinzufügen extends Fragment {
 
-    //Url zum login.php skript..dieses liefert mir das Passwort zu einem Username
-    final String scripturlstring = "https://terence-thias.000webhostapp.com/fangbuch/login.php";
+    EditText fischart;
+    EditText länge;
+    EditText anzahl;
+    EditText gewaesser;
+    EditText datum;
+    Button fanghinzusenden;
 
-    TextView tv;   //TextView soll anzeigen ob loggin erfolgreich war
-    EditText un;   // un = Username -- hier wir un eingtragen
-    EditText pw;   //pw=Passowrt
-    Button logBtn;
-    Button register;
-
-
+    final String  scripturlstring = "https://terence-thias.000webhostapp.com/fangbuch/fanghinzu.php";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return  inflater.inflate(R.layout.login_screen,container,false);
-
-        //Zuweisen der fragment xml layoutdatei und inflaten(macht xml zu javaObjekt)
-
-
-
+        return inflater.inflate(R.layout.fanghinzufuegen,container,false);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        tv = (TextView) getActivity().findViewById(R.id.login_message); //getActivity gibt context
-        un = (EditText) getActivity().findViewById(R.id.un);
-        pw = (EditText) getActivity().findViewById(R.id.pw);
-        logBtn= (Button) getActivity().findViewById(R.id.login);
+        fischart = (EditText)getActivity().findViewById(R.id.fischart);
+        länge = (EditText)getActivity().findViewById(R.id.länge);
+        anzahl = (EditText)getActivity().findViewById(R.id.anzahl);
+        gewaesser = (EditText)getActivity().findViewById(R.id.gewässer);
+        datum = (EditText)getActivity().findViewById(R.id.datum);
+        fanghinzusenden = (Button) getActivity().findViewById(R.id.fanghinzusenden);
 
-        register = (Button) getActivity().findViewById(R.id.register);
-
-        register.setOnClickListener(new View.OnClickListener() {
+        fanghinzusenden.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Register_Fragment register_fragment = new Register_Fragment();
-                FragmentManager manager = getActivity().getFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-               //transaction.replace(R.id.login_screen,register_fragment,"musiclist");
-                transaction.addToBackStack(null);
-                transaction.add(R.id.drawer_layout,register_fragment,"register");
-
-                transaction.commit();
+                sendCatchDataToDb();
             }
         });
 
 
-
-        logBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (internetAvailable()) {
-                    sendLoginDataToDb();
-                } else {
-                    Toast.makeText(getActivity(), "Internet ist nicht Verfügbar.", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
 
     }
 
-    //  Funktion in der der Daten an Database geschickt werden
-    public void sendLoginDataToDb(){
+    public void sendCatchDataToDb(){
 
 
         new Thread(new Runnable() {
@@ -102,10 +71,16 @@ public class Login_Fragment extends Fragment {
 
                 try {
                     //Die Key-Value pairs die per POST Methode an php-skript gehen
-                    String textparam = URLEncoder.encode("vorname", "UTF-8")
-                            + "=" + URLEncoder.encode(un.getText().toString(), "UTF-8")+"&"+
-                            URLEncoder.encode("passwort", "UTF-8")
-                            + "=" + URLEncoder.encode(pw.getText().toString(), "UTF-8");
+                    String textparam = URLEncoder.encode("fischart", "UTF-8")
+                            + "=" + URLEncoder.encode(fischart.getText().toString(), "UTF-8")+"&"+
+                            URLEncoder.encode("laenge", "UTF-8")
+                            + "=" + URLEncoder.encode(länge.getText().toString(), "UTF-8")+"&"+
+                            URLEncoder.encode("anzahl", "UTF-8")
+                            + "=" + URLEncoder.encode(anzahl.getText().toString(), "UTF-8")+"&"+
+                            URLEncoder.encode("gewaesser", "UTF-8")
+                            + "=" + URLEncoder.encode(gewaesser.getText().toString(), "UTF-8")+"&"+
+                            URLEncoder.encode("datum", "UTF-8")
+                            + "=" + URLEncoder.encode(datum.getText().toString(), "UTF-8");
 
                     URL scripturl = new URL(scripturlstring);
                     HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
@@ -130,17 +105,12 @@ public class Login_Fragment extends Fragment {
 
 
 
-                if(isAdded()){
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {//Vergleich des in UI eingebenen Passworts mit in Db gespreichterm
-                            if(answer.equals(pw.getText().toString())) {
-                                tv.setText("Sie sind nun eingeloggt !");
-                                Log.e("bla",answer);
-                            }
-                           // Log.e("bla",answer + " " +pw.getText().toString() );
-                        }
-                    });}
+
+
+
+
+
+
 
                     answerInputStream.close();
                     connection.disconnect();
@@ -184,5 +154,4 @@ public class Login_Fragment extends Fragment {
         NetworkInfo networkInfo =  connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
-
 }

@@ -5,19 +5,19 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/fanghinzu"
             android:icon="@drawable/ic_menu_camera"
             android:title="Fang hinzufügen" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_meinfangbuch"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Mein Fangbuch" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_fängeverwalten"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Fänge verwalten" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_logout"
             android:icon="@drawable/ic_menu_manage"
             android:title="Logout" />
     </group>
