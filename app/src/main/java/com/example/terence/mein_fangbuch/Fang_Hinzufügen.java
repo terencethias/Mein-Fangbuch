@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,8 @@ public class Fang_Hinzufügen extends Fragment {
     Button fanghinzusenden;
 
     final String  scripturlstring = "https://terence-thias.000webhostapp.com/fangbuch/fanghinzu.php";
+    String Tablename;
+
 
     @Nullable
     @Override
@@ -55,6 +58,7 @@ public class Fang_Hinzufügen extends Fragment {
             @Override
             public void onClick(View view) {
                 sendCatchDataToDb();
+                Log.e("Benutztername",Tablename);
             }
         });
 
@@ -70,6 +74,7 @@ public class Fang_Hinzufügen extends Fragment {
             public void run() {
 
                 try {
+
                     //Die Key-Value pairs die per POST Methode an php-skript gehen
                     String textparam = URLEncoder.encode("fischart", "UTF-8")
                             + "=" + URLEncoder.encode(fischart.getText().toString(), "UTF-8")+"&"+
@@ -80,7 +85,9 @@ public class Fang_Hinzufügen extends Fragment {
                             URLEncoder.encode("gewaesser", "UTF-8")
                             + "=" + URLEncoder.encode(gewaesser.getText().toString(), "UTF-8")+"&"+
                             URLEncoder.encode("datum", "UTF-8")
-                            + "=" + URLEncoder.encode(datum.getText().toString(), "UTF-8");
+                            + "=" + URLEncoder.encode(datum.getText().toString(), "UTF-8")+"&"+
+                            URLEncoder.encode("tablename", "UTF-8")
+                            + "=" + URLEncoder.encode(Tablename, "UTF-8");
 
                     URL scripturl = new URL(scripturlstring);
                     HttpURLConnection connection = (HttpURLConnection) scripturl.openConnection();
@@ -154,4 +161,15 @@ public class Fang_Hinzufügen extends Fragment {
         NetworkInfo networkInfo =  connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
+
+    public void setTableNameVariable(String tablename){
+
+
+
+        Tablename = tablename;
+
+    }
+
+
+
 }

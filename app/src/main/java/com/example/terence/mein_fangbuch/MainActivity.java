@@ -31,10 +31,11 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements  NavigationView.OnNavigationItemSelectedListener, Communicator {
 
 
     final String scripturlstring = "https://terence-thias.000webhostapp.com/fangbuch/login.php";
+    Boolean rightLogin=false;
 
     TextView tv;   //TextView soll anzeigen ob loggin erfolgreich war
     EditText un;   // un = Username -- hier wir un eingtragen
@@ -48,13 +49,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         //Erzeugt mir ein Fragment in activity_main , hier Start-Fragtment Login/Registrierscreen
-/*
-        Login_Fragment logfrag = new Login_Fragment();
-        FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.drawer_layout,logfrag,"login");
-        transaction.commit();
-*/
+
 
 
 
@@ -146,23 +141,32 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Log.e("fanghinzu",Integer.toString(id));
-        if (id == R.id.fanghinzu) {
-            Fang_Hinzufügen addcatch = new Fang_Hinzufügen();
-            FragmentManager manager = getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(R.id.drawer_layout,addcatch,"addcatch");
-            //transaction.addToBackStack(null);
-            //transaction.add(R.id.drawer_layout,addcatch,"addcatch");
-            transaction.commit();
+        if (id == R.id.fanghinzu ) {
+            if( rightLogin == true) {
+                Fang_Hinzufügen addcatch = new Fang_Hinzufügen();
+                FragmentManager manager = getFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(R.id.drawer_layout, addcatch, "addcatch");
+                addcatch.setTableNameVariable(un.getText().toString());
+                transaction.addToBackStack(null);
+                //transaction.addToBackStack(null);
+                //transaction.add(R.id.drawer_layout,addcatch,"addcatch");
+                transaction.commit();
 
-            Log.e("fanghinzu","gedrückt");
-
+                Log.e("fanghinzu", "gedrückt");
+            }
+            else{
+                Toast.makeText(this, "Sie müssen sich erst einloggen", Toast.LENGTH_SHORT).show();
+            }
         } else if (id == R.id.nav_meinfangbuch) {
 
         } else if (id == R.id.nav_fängeverwalten) {
 
         } else if (id == R.id.nav_logout) {
-
+            if(rightLogin==true) {
+                rightLogin = false;
+                Toast.makeText(this, "Sie sind nun ausgeloggt", Toast.LENGTH_SHORT).show();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -220,6 +224,7 @@ public class MainActivity extends AppCompatActivity
                             public void run() {//Vergleich des in UI eingebenen Passworts mit in Db gespreichterm
                                 if(answer.equals(pw.getText().toString())) {
                                     tv.setText("Sie sind nun eingeloggt !");
+                                    rightLogin = true;
                                     Log.e("bla",answer);
                                 }
                                 // Log.e("bla",answer + " " +pw.getText().toString() );
@@ -272,6 +277,8 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void sendData(String data) {
 
-
+    }
 }
