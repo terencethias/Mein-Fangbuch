@@ -79,6 +79,9 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 if (internetAvailable()) {
                     sendLoginDataToDb();
+
+
+
                 }
             }
         });
@@ -120,7 +123,7 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -134,7 +137,7 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -222,11 +225,13 @@ public class MainActivity extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {//Vergleich des in UI eingebenen Passworts mit in Db gespreichterm
-                                if(answer.equals(pw.getText().toString())) {
-                                    tv.setText("Sie sind nun eingeloggt !");
+                                if(!pw.getText().toString().isEmpty() && answer.equals(pw.getText().toString())) {
+                                    //tv.setText("Sie sind nun eingeloggt !");
+                                    Toast.makeText(getApplicationContext(),"Sie sind nun eingeloggt",Toast.LENGTH_SHORT).show();
                                     rightLogin = true;
                                     Log.e("bla",answer);
                                 }
+                                else{ Toast.makeText(getApplicationContext()," Falsches Passwort. Geben Sie erneut das Passowrt ein!",Toast.LENGTH_SHORT).show();}
                                 // Log.e("bla",answer + " " +pw.getText().toString() );
                             }
                         });
