@@ -162,10 +162,14 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "Sie müssen sich erst einloggen", Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.nav_meinfangbuch) {
-
-        } else if (id == R.id.nav_fängeverwalten) {
-
-        } else if (id == R.id.nav_logout) {
+                Faenge_Ansehen watchcatch = new Faenge_Ansehen();
+                FragmentManager manager= getFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(R.id.drawer_layout,watchcatch,"watchcatch");
+                transaction.addToBackStack(null);
+                transaction.commit();
+        }
+        else if (id == R.id.nav_logout) {
             if(rightLogin==true) {
                 rightLogin = false;
                 Toast.makeText(this, "Sie sind nun ausgeloggt", Toast.LENGTH_SHORT).show();

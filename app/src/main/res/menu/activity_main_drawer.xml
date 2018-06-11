@@ -6,19 +6,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/fanghinzu"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_add_box_black_24dp"
             android:title="Fang hinzufügen" />
         <item
             android:id="@+id/nav_meinfangbuch"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Mein Fangbuch" />
         <item
-            android:id="@+id/nav_fängeverwalten"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Fänge verwalten" />
-        <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_power_settings_new_black_24dp"
             android:title="Logout" />
     </group>
 
