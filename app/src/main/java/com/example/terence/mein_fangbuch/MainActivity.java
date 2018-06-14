@@ -166,6 +166,7 @@ public class MainActivity extends AppCompatActivity
                 FragmentManager manager= getFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 transaction.replace(R.id.drawer_layout,watchcatch,"watchcatch");
+                watchcatch.setTableNameVariable(un.getText().toString());
                 transaction.addToBackStack(null);
                 transaction.commit();
         }
