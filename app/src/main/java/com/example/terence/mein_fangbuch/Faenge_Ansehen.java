@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -89,18 +93,34 @@ public class Faenge_Ansehen extends Fragment {
                     final String  answer = getTextFromInputStream(answerInputStream);
 
 
+                    JSONArray mJsonArray = new JSONArray(answer);
+
+                    int size=  mJsonArray.length();
+
+                    int i = 0;
+                    String[] fischart = new String[size];
+                    String[] länge = new String[size];
+                    String[] anzahl = new String[size];
+                    String[] gewässer = new String[size];
+                    String[] datum = new String[size];
+
+                    while(i < size)
+                    {
+                        JSONObject mJsonObject = mJsonArray.getJSONObject(i);
+                        fischart[i]= mJsonObject.getString("Fischart");
+                        länge[i]= mJsonObject.getString("Länge");
+                        anzahl[i]= mJsonObject.getString("Anzahl");
+                        gewässer[i]= mJsonObject.getString("Gewässer");
+                        datum[i]= mJsonObject.getString("Datum");
 
 
-
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {//Vergleich des in UI eingebenen Passworts mit in Db gespreichterm
-                            table.setText(answer);
-                        }
-                    });
-
-
-
+                        Log.e("Fischarten",fischart[i]);
+                        Log.e("Fischarten",länge[i]);
+                        Log.e("Fischarten",anzahl[i]);
+                        Log.e("Fischarten",gewässer[i]);
+                        Log.e("Fischarten",datum[i]);
+                        i++;
+                    }
 
 
                     answerInputStream.close();
@@ -110,8 +130,9 @@ public class Faenge_Ansehen extends Fragment {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
 
 
             }
